@@ -24,3 +24,6 @@
 
 # Allow listing for swagger files
 !/docs/swagger.*
+
+# Allow air config
+!/.air.toml
