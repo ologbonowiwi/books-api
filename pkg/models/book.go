@@ -46,12 +46,11 @@ func GetBookById(id int64) *Book {
 
 func DeleteBook(id int64) Book {
 	var book Book
-	db.Where("ID=?", id).Delete(book)
+	db.Where("ID=?", id).Delete(&book)
 	return book
 }
 
 func (book *Book) UpdateBook() *Book {
-	db.Model(book).Updates(book)
-
+	db.Save(book)
 	return book
 }

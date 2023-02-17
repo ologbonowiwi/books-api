@@ -4,8 +4,6 @@ definitions:
     properties:
       author:
         type: string
-      id:
-        type: integer
       name:
         type: string
       publication:
@@ -103,6 +101,10 @@ paths:
             $ref: '#/definitions/models.Book'
         "404":
           description: Book with id not found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
           schema:
             type: string
       summary: Get book by id
