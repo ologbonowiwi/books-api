@@ -120,3 +120,44 @@ func UpdateBook(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, book)
 }
+
+// @Summary Update book partial
+// @Description update book partial
+// @Accept json
+// @Produce json
+// @Param id path int true "Book ID"
+// @Param book body models.Book true "Book"
+// @Success 200 {object} models.Book
+// @Failure 400 {string} string "Bad request"
+// @Failure 404 {string} string "Book with id not found"
+// @Router /books/{id} [patch]
+func UpdateBookPartial(ctx *gin.Context) {
+	id, err := strconv.ParseInt(ctx.Param("id"), 0, 0)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, "Error parsing the id")
+		return
+	}
+
+	data := &models.Book{}
+	if err := ctx.BindJSON(data); err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	book := models.GetBookById(id)
+
+	if data.Author != "" {
+		book.Author = data.Author
+	}
+	if data.Name != "" {
+		book.Name = data.Name
+	}
+	if data.Publication != "" {
+		book.Publication = data.Publication
+	}
+
+	book.UpdateBook()
+
+	ctx.JSON(http.StatusOK, book)
+}

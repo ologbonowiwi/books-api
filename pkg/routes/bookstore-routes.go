@@ -22,6 +22,7 @@ func SetupRoutes() {
 	router.GET("/books/:id", controllers.GetBookById)
 	router.PUT("/books/:id", controllers.UpdateBook)
 	router.DELETE("/books/:id", controllers.DeleteBook)
+	router.PATCH("/books/:id", controllers.UpdateBookPartial)
 
 	router.Run()
 }

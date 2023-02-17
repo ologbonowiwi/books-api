@@ -108,6 +108,38 @@ paths:
           schema:
             type: string
       summary: Get book by id
+    patch:
+      consumes:
+      - application/json
+      description: update book partial
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "404":
+          description: Book with id not found
+          schema:
+            type: string
+      summary: Update book partial
     put:
       consumes:
       - application/json
