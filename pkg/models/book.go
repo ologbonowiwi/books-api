@@ -1,20 +1,17 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/ologbonowiwi/bookstore-api/pkg/config"
 	"gorm.io/gorm"
 )
 
 type Book struct {
-	ID          uint
+	gorm.Model
 	Name        string `json:"name"`
 	Author      string `json:"author"`
 	Publication string `json:"publication"`
-}
-
-type bookModel struct {
-	gorm.Model
-	Book
 }
 
 var db *gorm.DB
@@ -24,28 +21,21 @@ func init() {
 
 	db = config.GetDB()
 
-	db.AutoMigrate(&bookModel{})
-}
-
-func (book *Book) parseToModel() *bookModel {
-	model := bookModel{}
-
-	model.Author = book.Author
-	model.Name = book.Name
-	model.Publication = book.Publication
-
-	return &model
+	db.AutoMigrate(&Book{})
 }
 
 func CreateBook(book *Book) *Book {
-	db.Create(book.parseToModel())
+	db.Create(book)
+
+	fmt.Println(book)
+
 	return book
 }
 
 func GetAllBooks() []Book {
-	var Books []Book
-	db.Find(&Books)
-	return Books
+	var books []Book
+	db.Find(&books)
+	return books
 }
 
 func GetBookById(id int64) *Book {
@@ -56,12 +46,12 @@ func GetBookById(id int64) *Book {
 
 func DeleteBook(id int64) Book {
 	var book Book
-	db.Where("ID=?", id).Delete(book.parseToModel())
+	db.Where("ID=?", id).Delete(book)
 	return book
 }
 
 func (book *Book) UpdateBook() *Book {
-	db.Model(book.parseToModel()).Updates(book)
+	db.Model(book).Updates(book)
 
 	return book
 }
