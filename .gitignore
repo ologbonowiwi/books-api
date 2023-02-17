@@ -21,3 +21,6 @@
 
 # ...even if they are in subdirectories
 !*/
+
+# Allow listing for swagger files
+!/docs/swagger.*

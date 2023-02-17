@@ -2,10 +2,17 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	_ "github.com/ologbonowiwi/bookstore-api/docs"
 	"github.com/ologbonowiwi/bookstore-api/pkg/controllers"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func RegisterRoutes(router *gin.Engine) {
+func SetupRoutes() {
+	router := gin.Default()
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	router.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Content-Type", "application/json")
 		c.Next()
@@ -15,4 +22,6 @@ func RegisterRoutes(router *gin.Engine) {
 	router.GET("/books/:id", controllers.GetBookById)
 	router.PUT("/books/:id", controllers.UpdateBook)
 	router.DELETE("/books/:id", controllers.DeleteBook)
+
+	router.Run()
 }
